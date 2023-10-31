@@ -1,0 +1,57 @@
+.header {
+    display: flex;
+    height: 40vh;
+    align-items: flex-end;
+    gap: 20px;
+    padding: 20px;
+}
+
+img {
+    width: 200px;
+}
+
+.info {
+    display: flex;
+    gap: 10px;
+}
+
+.playlistTitle {
+    font-size: 3rem;
+}
+
+table {
+    width: 100%;
+    border: none;
+}
+
+td {
+    height: 50px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+tr {
+    padding: 0 10px;
+}
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.208);
+}
+
+.idTrack{
+    width: 50px;
+}
+
+.tableHeader {
+    background-color: rgba(255, 255, 255, 0.092);
+}
+
+.titleTable {
+    display: flex;
+    align-items: center;
+}
+
+.titleTable img {
+height: 100%;
+width: auto;
+margin: 10px;
+}

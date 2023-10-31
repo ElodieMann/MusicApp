@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #121212;
+  font-family: "Lexend Deca", sans-serif;
+  color: white;
+}
+
+.titleCategory {
+    padding: 20px;
+
+}
+
+.containerPlaylist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 100px;
+  padding: 30px;
+}
+
+.card {
+  border-radius: 10px;
+  width: 30%;
+  background-color: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+}
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.208);
+}
+
+img {
+  width: 90%;
+  border-radius: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.musicapp {
+  font-size: 0.7rem;
+}
