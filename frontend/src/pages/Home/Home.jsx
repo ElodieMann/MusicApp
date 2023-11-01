@@ -100,7 +100,7 @@ const Home = () => {
           {categoryData.playlists.map((data) => (
             <div className={styles.card}>
               <Link to={data.id} state={data} key={data.id}>
-                <img  src={data.images[0].url} alt={data.name} />
+                <img className={styles.imgHome}  src={data.images[0].url} alt={data.name} />
                 <p>{data.name}</p>
                 <p className={styles.musicapp}>By MusicApp <span>
               <FontAwesomeIcon icon={faMusic} />
