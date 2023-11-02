@@ -10,8 +10,8 @@ const Card = ({ category}) => {
     <div className={styles.listCard}>
       <h1 className={styles.titleCategory}>{category?.name}</h1>
       <div className={styles.containerPlaylist}>
-        {category?.playlists?.map((data) => (
-          <div className={styles.card}>
+        {category?.playlists?.map((data, index) => (
+          <div key={index} className={styles.card}>
             <Link to={data.id ? `/search/${data.id}` : '/search'} state={data} key={data.id}>
               <img className={styles.imgHome} src={data?.images?.[0]?.url || data?.album?.images?.[0]?.url} alt={data.name} />
               <p>{data.name}</p>

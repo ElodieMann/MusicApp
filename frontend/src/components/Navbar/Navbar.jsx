@@ -5,26 +5,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
-  const [isActive, setIsActive] = useState(false);
+  const [activeLink, setActiveLink] = useState(null);
 
-  const tabActive = (e) => {
-    if (!isActive) {
-      setIsActive(true);
-      e.target.value.style = "white";
-    } else {
-      setIsActive(false);
-      e.target.value.style = "rgba(255, 255, 255, 0.278)";
-    }
+  const handleNavLinkClick = (link) => {
+    setActiveLink(link);
   };
+
   return (
     <div className={styles.nav}>
-      <NavLink className={styles.link} to="/" onClick={tabActive} activeStyle>
+      <NavLink
+        className={styles.link}
+        to="/"
+        onClick={() => handleNavLinkClick("home")}
+        style={activeLink === "home" ? { color: "white" } : null}
+      >
         <span>
           <FontAwesomeIcon icon={faHouse} />
         </span>
         Home
       </NavLink>
-      <NavLink className={styles.link} to="/search" activeStyle>
+      <NavLink
+        className={styles.link}
+        to="/search"
+        onClick={() => handleNavLinkClick("search")}
+        style={activeLink === "search" ? { color: "white" } : null}
+      >
         <span>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </span>

@@ -10,7 +10,8 @@
   color: white;
   height: 100vh;
   width: 100vw;
-  margin: 10%;
+  background-color: black;
+  padding-top: 20px;
 }
 
 .formLogin {
@@ -27,7 +28,27 @@ input {
     border:1px solid rgba(255, 255, 255, 0.193);
 }
 input:focus {
-
     border:1px solid white;
 }
+input[type='submit'] {
+    background-color: #1BD760;
+    color: black;
+    width: 60%;
+    margin-top: 20px;
+    border-radius: 30px;
+}
 
+.redirect{
+    display: flex;
+    gap: 10px;
+
+    a {
+        color: #1BD760;
+        text-decoration: underline;
+    }
+}
+
+.errData {
+  color: red;
+  margin-top: 10px;
+}

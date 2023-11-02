@@ -8,15 +8,24 @@ import Album from "./pages/Album/Album";
 import "./App.css";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import Login from "./pages/Login/Login";
+import Login from "./pages/LoginRegister/Login";
+import Register from "./pages/LoginRegister/Register";
 
 function App() {
-
   const [token, setToken] = useState("");
+
+  const [isLog, setIsLog] = useState(
+    localStorage.getItem("isLog") === "true" || false
+  );
+  useEffect(() => {
+    localStorage.setItem("isLog", isLog);
+  }, [isLog]);
+
 
   useEffect(() => {
     fetchData();
   }, []);
+
 
   const fetchData = async () => {
     try {
@@ -41,16 +50,30 @@ function App() {
 
   return (
     <Router>
-      {/* <div>
-        <Navbar />
-        <Library />
-      </div> */}
-      <Routes>
-        <Route path="/" element={<Home token={token} />} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/search" element={<Search token={token}/>} />
-        <Route path="/search/:id" element={<Album />} />
-      </Routes>
+      {isLog ? (
+        <div className="musicapp">
+         
+          <div>
+            <Navbar />
+            <Library />
+          </div>
+          <Routes>
+            
+            <Route path="/" element={<Home token={token}  />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/search" element={<Search token={token} />} />
+            <Route path="/search/:id" element={<Album />} />
+          </Routes>
+        </div>
+      ) : (
+        
+        <Routes>
+          <Route path="/" element={<Login setIsLog={setIsLog} />} />
+          
+          <Route path="/register" element={<Register setIsLog={setIsLog} />} />
+        </Routes>
+      )}
     </Router>
   );
 }

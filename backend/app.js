@@ -13,4 +13,4 @@ app.use('/', routes);
 
 app.set('db', db);
 
-app.listen(3000, () => console.log('Example app listening on port 3000'));
+app.listen(3300, () => console.log('Example app listening on port 3300'));
