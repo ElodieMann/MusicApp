@@ -129,12 +129,12 @@ const Album = () => {
   };
 
   return (
-    <div>
+    <div className={styles.album}>
       <div style={{ backgroundColor: randomColor() }} className={styles.header}>
-        <img className={styles.imgHeader} src={data.images[0].url} alt={data.name} />
+        <img className={styles.imgHeader} src={data?.images?.[0]?.url} alt={data?.name} />
         <div className={styles.headerContain}>
           <p>Playlist</p>
-          <p className={styles.playlistTitle}>{data.name}</p>
+          <p className={styles.playlistTitle}>{data?.name}</p>
           <div className={styles.info}>
             <p>
               <span>
@@ -145,8 +145,8 @@ const Album = () => {
               </span>
               MusicApp &#11824;
             </p>
-            <p>{data.followers.total} likes &#11824; </p>
-            <p>{data.tracks.items.length} songs</p>
+            <p>{data?.followers?.total} likes &#11824; </p>
+            <p>{data?.tracks?.items?.length} songs</p>
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@ const Album = () => {
             <FontAwesomeIcon icon={faClock} />
           </div>
         </div>
-        {data.tracks.items.map((item, index) => (
+        {data?.tracks?.items?.map((item, index) => (
           <div
             className={styles.gridRow}
             key={item.track.id}
@@ -178,10 +178,10 @@ const Album = () => {
               )}
             </div>
             <div className={`${styles.gridItem}`}>
-              <img className={styles.imgItem}  src={item.track.album.images[0].url} alt="" />
-              {item.track.name}
+              <img className={styles.imgItem}  src={item?.track?.album?.images?.[0]?.url} alt="" />
+              {item?.track?.name}
             </div>
-            <div className={`${styles.gridItem}`}>{item.track.album.name}</div>
+            <div className={`${styles.gridItem}`}>{item?.track?.album?.name}</div>
             
             <div className={`${styles.gridItem}`}>
               {formatClock(item.track.duration_ms)}
@@ -196,19 +196,19 @@ const Album = () => {
         <div className={styles["info-player"]}>
       
           <img
-            src={data.tracks.items[currentTrackIndex].track.album.images[0].url}
-            alt={data.tracks.items[currentTrackIndex].track.album.name}
+            src={data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]?.url}
+            alt={data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name}
             className={styles["audio-album-image"]}
           />
           <p className={styles["audio-track-name"]}>
-            {data.tracks.items[currentTrackIndex].track.name}
+            {data?.tracks?.items?.[currentTrackIndex]?.track?.name}
           </p>
         
         </div>
         <div className={styles["player"]}>
         <audio
           ref={audioRef}
-          src={data.tracks.items[currentTrackIndex].track.preview_url}
+          src={data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url}
           preload="metadata"
         ></audio>
         <div className={styles["audio-controls"]}>

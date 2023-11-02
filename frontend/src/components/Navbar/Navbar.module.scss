@@ -1,0 +1,21 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 15px;
+  background-color: #121212;
+  margin: 10px;
+  width: 30vw;
+  font-size: 1.3rem;
+  height: 15vh;
+  border-radius: 5px;
+}
+
+.link {
+  display: block;
+}
+
+span {
+  margin-right: 10px;
+  color: rgba(255, 255, 255, 0.278);
+}

@@ -1,20 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap");
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
+.listCard {
   background-color: #121212;
-  font-family: "Lexend Deca", sans-serif;
   color: white;
+  border-radius: 5px;
+  margin: 10px 10px 10px 0;
+  width: auto;
 }
 
 .titleCategory {
-    padding: 20px;
-
+  padding: 20px;
 }
 
 .containerPlaylist {

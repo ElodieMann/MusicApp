@@ -1,9 +1,15 @@
+.album{
+  border-radius: 5px;
+  margin: 10px 10px 10px 0;
+}
+
 .header {
   display: flex;
   align-items: end;
   gap: 20px;
   padding: 20px;
   height: 30vh;
+  color: white;
 
   .imgHeader {
     height: 80%;
@@ -30,6 +36,8 @@
 }
 .grid {
   padding: 30px;
+  color: white;
+background-color: #121212;
 }
 
 .gridHeader,
@@ -66,9 +74,11 @@
   background-color: black;
   width: 100%;
   height: 20vh;
+  color: white;
+
 
   .info-player {
-    width: 25%;
+    width: 40%;
 
     padding: 20px;
 
