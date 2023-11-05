@@ -5,8 +5,8 @@ const ListCard = ({ categoryData }) => {
   return (
     <div>
         
-      {categoryData?.map((category, index) => (
-        <Card key={index} category={category}  />
+      {categoryData?.map((data, index) => (
+        <Card key={index} data={data}  />
       ))}
     </div>
   );

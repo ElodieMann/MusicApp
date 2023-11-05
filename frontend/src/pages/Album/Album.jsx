@@ -12,9 +12,11 @@ import {
   faRepeat,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Album.module.scss";
+import axios from "axios";
 
-const Album = () => {
-  const data = useLocation().state;
+const Album = ({token}) => {
+  const param = useLocation().state;
+  const [dataInfo, setDataInfo] = useState([])
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -23,6 +25,31 @@ const Album = () => {
   const [isRandom, setIsRandom] = useState(false);
   const audioRef = useRef();
   const [hovered, setHovered] = useState(false);
+  const data = dataInfo || param
+
+
+
+  useEffect(() => {
+    fetchDataType()
+  }, [])
+
+  const fetchDataType = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.spotify.com/v1/${param.type}s/${param.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+ 
+      setDataInfo(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
 
   const playNext = () => {
     if (isRandom) {
@@ -111,6 +138,8 @@ const Album = () => {
     });
   }, [currentTrackIndex, isPlaying, loop, isRandom]);
 
+
+
   useEffect(() => {
     const audio = audioRef.current;
     if (isPlaying) {
@@ -127,6 +156,10 @@ const Album = () => {
     const alpha = 0.1;
     return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
   };
+
+console.log('====================================');
+console.log(data);
+console.log('====================================');
 
   return (
     <div className={styles.album}>
@@ -163,7 +196,7 @@ const Album = () => {
         {data?.tracks?.items?.map((item, index) => (
           <div
             className={styles.gridRow}
-            key={item.track.id}
+            key={item?.track?.id}
             onMouseEnter={() => setHovered(index)}
             onMouseLeave={() => setHovered(null)}
           >
@@ -178,39 +211,40 @@ const Album = () => {
               )}
             </div>
             <div className={`${styles.gridItem}`}>
-              <img className={styles.imgItem}  src={item?.track?.album?.images?.[0]?.url} alt="" />
-              {item?.track?.name}
+              <img className={styles.imgItem}  src={(item?.track?.album?.images?.[0]?.url || data?.images?.[0]?.url)} alt="" />
+              {(item?.track?.name || item?.name)}
             </div>
-            <div className={`${styles.gridItem}`}>{item?.track?.album?.name}</div>
+            <div className={`${styles.gridItem}`}>{item?.track?.album?.name || data?.name}</div>
             
             <div className={`${styles.gridItem}`}>
-              {formatClock(item.track.duration_ms)}
+              {formatClock(item?.track?.duration_ms || item?.duration_ms)}
             </div>
           </div>
         ))}
       </div>
 
-
+  
 
       <div className={styles["audio-player"]}>
         <div className={styles["info-player"]}>
       
           <img
-            src={data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]?.url}
-            alt={data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name}
+            src={(data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]?.url || data?.images?.[0]?.url)}
+            alt={(data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name || data?.name)}
             className={styles["audio-album-image"]}
           />
           <p className={styles["audio-track-name"]}>
-            {data?.tracks?.items?.[currentTrackIndex]?.track?.name}
+            {(data?.tracks?.items?.[currentTrackIndex]?.track?.name || data?.name)}
           </p>
         
         </div>
         <div className={styles["player"]}>
         <audio
           ref={audioRef}
-          src={data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url}
+          src={(data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url || data?.tracks?.items?.[currentTrackIndex]?.preview_url)}
           preload="metadata"
         ></audio>
+       
         <div className={styles["audio-controls"]}>
           <button className={styles["control-button"]} onClick={toggleRandom}>
             <FontAwesomeIcon icon={faShuffle} />

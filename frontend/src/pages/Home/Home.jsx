@@ -72,6 +72,7 @@ const Home = ({ token }) => {
     { name: "Latin favorite", playlists: dataLatin },
   ];
 
+
   return <ListCard categoryData={categoryData} />;
 };
 

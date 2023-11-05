@@ -63,7 +63,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<Search token={token} />} />
-            <Route path="/search/:id" element={<Album />} />
+            <Route path="/search/:id" element={<Album token={token} />} />
           </Routes>
         </div>
       ) : (
