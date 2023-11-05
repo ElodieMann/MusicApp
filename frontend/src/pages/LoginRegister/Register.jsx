@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Login.module.scss";
 import axios from "axios";
  
-const Register = ({ setIsLog }) => {
+const Register = ({ setIsLog, setUserIdStorage }) => {
  
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -22,7 +22,9 @@ const Register = ({ setIsLog }) => {
         email,
         password,
       });
+      setUserIdStorage(response.data[0].id)
       setIsLog(true);
+      window.location.href = "/"; 
     } catch (e) {
       console.log(e);
     }

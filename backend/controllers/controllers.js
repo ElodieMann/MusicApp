@@ -47,7 +47,46 @@ const loginUser = async (req, res) => {
     }
   };
 
+  const getAllPlaylistsByUserId = async (req, res) => {
+    const userId = req.params.userId; // Assurez-vous que l'ID de l'utilisateur est correctement extrait de la requête
+  
+    try {
+      const playlists = await models.getAllPlaylistsByUserId(userId);
+      res.status(200).json(playlists);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
+
+  const addToLibrary = async (req, res) => {
+    const { userId, data } = req.body;
+  
+    try {
+      const newPlaylist = await models.addToLibrary(userId, data);
+      res.status(201).json(newPlaylist);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
+  const deletePlaylist = async (req, res) => {
+    const playlistId = req.params.playlistId;
+    try {
+      await models.deletePlaylist(playlistId);
+      res.status(200).json({ message: "Playlist deleted successfully" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+
 module.exports = {
   createUser,
   loginUser,
+  getAllPlaylistsByUserId,
+  addToLibrary,
+  deletePlaylist
 };

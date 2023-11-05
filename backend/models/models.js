@@ -27,7 +27,7 @@ const createUser = async (
         password: hashedPassword,
         created_at: created_at || new Date(),
       })
-      .returning(["username", "email", "created_at"]);
+      .returning(["id", "username", "email", "created_at"]);
 
     return newUser;
   } catch (error) {
@@ -55,8 +55,45 @@ const findUser = async (email) => {
   }
 };
 
+const getAllPlaylistsByUserId = async (userId) => {
+  try {
+    const playlists = await db.select("id", "data", "createddate")
+      .from("playlists")
+      .where("userid", userId);
+    return playlists;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+const addToLibrary = async (userId, data) => {
+  try {
+    const newPlaylist = await db("playlists").insert({
+      userid: userId,
+      data: JSON.stringify(data),
+    }).returning('*');
+    return newPlaylist;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deletePlaylist = async (playlistId) => {
+  try {
+    await db("playlists").where("id", playlistId).del();
+    return;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   findUser,
   hashPassword,
+  getAllPlaylistsByUserId,
+  addToLibrary,
+  deletePlaylist
 };

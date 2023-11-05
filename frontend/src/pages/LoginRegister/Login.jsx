@@ -4,7 +4,7 @@ import axios from "axios";
 
 import styles from "./Login.module.scss";
 
-const Login = ({ setIsLog }) => {
+const Login = ({ setIsLog, setUserIdStorage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errData, setErrData] = useState(false);
@@ -20,6 +20,7 @@ const Login = ({ setIsLog }) => {
       });
 
       console.log(response);
+      setUserIdStorage(response.data.id);
 
       setIsLog(true);
 
@@ -30,7 +31,7 @@ const Login = ({ setIsLog }) => {
       setErr(e.response.data.error);
       setEmail("");
       setPassword("");
-    
+      setUserIdStorage(null);
     }
   };
 

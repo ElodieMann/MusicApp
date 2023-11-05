@@ -47,14 +47,27 @@ button:hover {
 }
 
 
-.gridLibrary {
+.gridLibrary,  .gridRow {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 2fr 1fr;
     width: 100%;
     padding: 10px;
-    
+    align-items: center;
   }
 .gridLibrary {
     border-bottom: 1px solid white;
     
+  }
+
+  .gridItem  {
+   display: flex;
+   align-items: center;
+   gap: 20px;
+  }
+  .gridItem img {
+    width: 20%;
+  }
+
+  .gridRow:hover {
+    background-color: rgba(255, 255, 255, 0.208);
   }

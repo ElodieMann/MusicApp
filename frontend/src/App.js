@@ -13,19 +13,22 @@ import Register from "./pages/LoginRegister/Register";
 
 function App() {
   const [token, setToken] = useState("");
+  const [userIdStorage, setUserIdStorage] = useState(
+    localStorage.getItem("userIdStorage") || null
+  );
 
   const [isLog, setIsLog] = useState(
     localStorage.getItem("isLog") === "true" || false
   );
   useEffect(() => {
     localStorage.setItem("isLog", isLog);
-  }, [isLog]);
+    localStorage.setItem("userIdStorage", userIdStorage);
+  }, [isLog, userIdStorage]);
 
 
   useEffect(() => {
     fetchData();
   }, []);
-
 
   const fetchData = async () => {
     try {
@@ -55,7 +58,7 @@ function App() {
          
           <div>
             <Navbar />
-            <Library />
+            <Library userIdStorage={userIdStorage} />
           </div>
           <Routes>
             
@@ -63,15 +66,15 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<Search token={token} />} />
-            <Route path="/search/:id" element={<Album token={token} />} />
+            <Route path="/search/:id" element={<Album token={token} userIdStorage={userIdStorage} />} />
           </Routes>
         </div>
       ) : (
         
         <Routes>
-          <Route path="/" element={<Login setIsLog={setIsLog} />} />
+          <Route path="/" element={<Login setIsLog={setIsLog} setUserIdStorage={setUserIdStorage}/>} />
           
-          <Route path="/register" element={<Register setIsLog={setIsLog} />} />
+          <Route path="/register" element={<Register setIsLog={setIsLog} setUserIdStorage={setUserIdStorage}/>} />
         </Routes>
       )}
     </Router>

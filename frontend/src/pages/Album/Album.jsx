@@ -10,13 +10,14 @@ import {
   faPause,
   faShuffle,
   faRepeat,
+  faHeartCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Album.module.scss";
 import axios from "axios";
 
-const Album = ({token}) => {
+const Album = ({ token, userIdStorage }) => {
   const param = useLocation().state;
-  const [dataInfo, setDataInfo] = useState([])
+  const [dataInfo, setDataInfo] = useState([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -25,13 +26,27 @@ const Album = ({token}) => {
   const [isRandom, setIsRandom] = useState(false);
   const audioRef = useRef();
   const [hovered, setHovered] = useState(false);
-  const data = dataInfo || param
-
-
+  const data = dataInfo || param;
 
   useEffect(() => {
-    fetchDataType()
-  }, [])
+    fetchDataType();
+    console.log(userIdStorage);
+    console.log('====================================');
+    console.log(data);
+    console.log('====================================');
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    audio.addEventListener("timeupdate", () => {
+      setCurrentTime(audio.currentTime);
+      setDuration(audio.duration);
+    });
+
+    audio.addEventListener("ended", () => {
+      playNext();
+    });
+  }, [currentTrackIndex, isPlaying, loop, isRandom]);
 
   const fetchDataType = async () => {
     try {
@@ -43,13 +58,24 @@ const Album = ({token}) => {
           },
         }
       );
- 
+
+      console.log("====================================");
+      console.log(response.data);
+      console.log("====================================");
       setDataInfo(response.data);
     } catch (e) {
       console.log(e);
     }
   };
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (isPlaying) {
+      audio.play().catch((err) => console.error("Error while playing:", err));
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying, currentTrackIndex]);
 
   const playNext = () => {
     if (isRandom) {
@@ -125,30 +151,6 @@ const Album = ({token}) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   }
 
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    audio.addEventListener("timeupdate", () => {
-      setCurrentTime(audio.currentTime);
-      setDuration(audio.duration);
-    });
-
-    audio.addEventListener("ended", () => {
-      playNext();
-    });
-  }, [currentTrackIndex, isPlaying, loop, isRandom]);
-
-
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (isPlaying) {
-      audio.play().catch((err) => console.error("Error while playing:", err));
-    } else {
-      audio.pause();
-    }
-  }, [isPlaying, currentTrackIndex]);
-
   const randomColor = () => {
     const red = Math.floor(Math.random() * 256);
     const green = Math.floor(Math.random() * 256);
@@ -157,14 +159,27 @@ const Album = ({token}) => {
     return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
   };
 
-console.log('====================================');
-console.log(data);
-console.log('====================================');
+  const addToLibrary = async () => {
+    try {
+      const response = await axios.post("http://localhost:3300/playlists", {
+        data: data,
+        userId: userIdStorage,
+      });
+      console.log(response.data);
+      window.location.reload();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div className={styles.album}>
       <div style={{ backgroundColor: randomColor() }} className={styles.header}>
-        <img className={styles.imgHeader} src={data?.images?.[0]?.url} alt={data?.name} />
+        <img
+          className={styles.imgHeader}
+          src={data?.images?.[0]?.url}
+          alt={data?.name}
+        />
         <div className={styles.headerContain}>
           <p>Playlist</p>
           <p className={styles.playlistTitle}>{data?.name}</p>
@@ -181,6 +196,11 @@ console.log('====================================');
             <p>{data?.followers?.total} likes &#11824; </p>
             <p>{data?.tracks?.items?.length} songs</p>
           </div>
+          <div>
+            <button onClick={addToLibrary}>
+              <FontAwesomeIcon icon={faHeartCirclePlus} /> Save to Your Library
+            </button>
+          </div>
         </div>
       </div>
       <div className={styles.grid}>
@@ -188,7 +208,7 @@ console.log('====================================');
           <div>#</div>
           <div>Title</div>
           <div>Album</div>
-         
+
           <div>
             <FontAwesomeIcon icon={faClock} />
           </div>
@@ -211,11 +231,19 @@ console.log('====================================');
               )}
             </div>
             <div className={`${styles.gridItem}`}>
-              <img className={styles.imgItem}  src={(item?.track?.album?.images?.[0]?.url || data?.images?.[0]?.url)} alt="" />
-              {(item?.track?.name || item?.name)}
+              <img
+                className={styles.imgItem}
+                src={
+                  item?.track?.album?.images?.[0]?.url || data?.images?.[0]?.url
+                }
+                alt=""
+              />
+              {item?.track?.name || item?.name}
             </div>
-            <div className={`${styles.gridItem}`}>{item?.track?.album?.name || data?.name}</div>
-            
+            <div className={`${styles.gridItem}`}>
+              {item?.track?.album?.name || data?.name}
+            </div>
+
             <div className={`${styles.gridItem}`}>
               {formatClock(item?.track?.duration_ms || item?.duration_ms)}
             </div>
@@ -223,62 +251,68 @@ console.log('====================================');
         ))}
       </div>
 
-  
-
       <div className={styles["audio-player"]}>
         <div className={styles["info-player"]}>
-      
           <img
-            src={(data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]?.url || data?.images?.[0]?.url)}
-            alt={(data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name || data?.name)}
+            src={
+              data?.tracks?.items?.[currentTrackIndex]?.track?.album
+                ?.images?.[0]?.url || data?.images?.[0]?.url
+            }
+            alt={
+              data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name ||
+              data?.name
+            }
             className={styles["audio-album-image"]}
           />
           <p className={styles["audio-track-name"]}>
-            {(data?.tracks?.items?.[currentTrackIndex]?.track?.name || data?.name)}
+            {data?.tracks?.items?.[currentTrackIndex]?.track?.name ||
+              data?.name}
           </p>
-        
         </div>
         <div className={styles["player"]}>
-        <audio
-          ref={audioRef}
-          src={(data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url || data?.tracks?.items?.[currentTrackIndex]?.preview_url)}
-          preload="metadata"
-        ></audio>
-       
-        <div className={styles["audio-controls"]}>
-          <button className={styles["control-button"]} onClick={toggleRandom}>
-            <FontAwesomeIcon icon={faShuffle} />
-          </button>
-          <button className={styles["control-button"]} onClick={playPrevious}>
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <button className={styles["control-button"]} onClick={togglePlay}>
-            {isPlaying ? (
-              <FontAwesomeIcon icon={faPause} />
-            ) : (
-              <FontAwesomeIcon icon={faPlay} />
-            )}
-          </button>
-          <button className={styles["control-button"]} onClick={playNext}>
-            <FontAwesomeIcon icon={faChevronRight} />
-          </button>
+          <audio
+            ref={audioRef}
+            src={
+              data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url ||
+              data?.tracks?.items?.[currentTrackIndex]?.preview_url
+            }
+            preload="metadata"
+          ></audio>
 
-          <button className={styles["control-button"]} onClick={toggleLoop}>
-            <FontAwesomeIcon icon={faRepeat} />
-          </button>
-        </div>
-        <div className={styles["audio-timeline"]}>
-          <span>{formatTime(currentTime)}</span>
-          <div className={styles["timeline"]} onClick={handleTimeChange}>
-            <div className={styles["timeline-background"]}></div>
-            <div
-              className={styles["timeline-fill"]}
-              style={{ width: `${(currentTime / duration) * 100}%` }}
-            ></div>
+          <div className={styles["audio-controls"]}>
+            <button className={styles["control-button"]} onClick={toggleRandom}>
+              <FontAwesomeIcon icon={faShuffle} />
+            </button>
+            <button className={styles["control-button"]} onClick={playPrevious}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+            <button className={styles["control-button"]} onClick={togglePlay}>
+              {isPlaying ? (
+                <FontAwesomeIcon icon={faPause} />
+              ) : (
+                <FontAwesomeIcon icon={faPlay} />
+              )}
+            </button>
+            <button className={styles["control-button"]} onClick={playNext}>
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+
+            <button className={styles["control-button"]} onClick={toggleLoop}>
+              <FontAwesomeIcon icon={faRepeat} />
+            </button>
           </div>
-          <span>{formatTime(duration - currentTime)}</span>
+          <div className={styles["audio-timeline"]}>
+            <span>{formatTime(currentTime)}</span>
+            <div className={styles["timeline"]} onClick={handleTimeChange}>
+              <div className={styles["timeline-background"]}></div>
+              <div
+                className={styles["timeline-fill"]}
+                style={{ width: `${(currentTime / duration) * 100}%` }}
+              ></div>
+            </div>
+            <span>{formatTime(duration - currentTime)}</span>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   );
