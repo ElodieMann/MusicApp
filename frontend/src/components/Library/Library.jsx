@@ -1,65 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlus,
-  faArrowLeft,
-  faPodcast,
-  faMagnifyingGlass,
-  faTrash
-} from "@fortawesome/free-solid-svg-icons";
-import styles from "./Library.module.scss";
+import { faPodcast, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import { removePlaylist, getPlaylist } from "../../redux/playlist";
+import { useSelector, useDispatch } from "react-redux";
+import { formatDate } from "../../services/helpers";
+import styles from "./Library.module.scss";
 
 import axios from "axios";
 
 const Library = ({ userIdStorage }) => {
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    getPlaylist();
-  }, []);
+  const playlist = useSelector((state) => state.playlist.playlist);
 
-  const getPlaylist = async () => {
-    try {
-      const userId = userIdStorage;
-      const response = await axios.get(
-        `http://localhost:3300/playlists/${userId}`
-      );
-      setData(response.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-
-    if (month < 10) {
-      month = `0${month}`;
-    }
-
-    if (day < 10) {
-      day = `0${day}`;
-    }
-
-    const formattedDate = `${year}-${month}-${day}`;
-    return formattedDate;
-  }
-
-  
   const deletePlaylist = async (playlistId) => {
     try {
-      await axios.delete(`http://localhost:3300/playlists/${playlistId}`);
-      getPlaylist(); // Rafraîchit la liste des playlists après la suppression
+      const res = await axios.delete(
+        `http://localhost:3300/playlists/${playlistId}`
+      );
+      if (res.status < 399) {
+        dispatch(removePlaylist(playlistId));
+      }
     } catch (error) {
       console.error(error);
     }
   };
-  
-  
 
   return (
     <div className={styles.library}>
@@ -70,9 +36,7 @@ const Library = ({ userIdStorage }) => {
           </span>
           Your Library
         </p>
-   
       </div>
-
 
       <div className={styles.grid}>
         <div className={styles.gridLibrary}>
@@ -80,13 +44,13 @@ const Library = ({ userIdStorage }) => {
           <div>Date Added</div>
           <div>Remove</div>
         </div>
-        {data?.map((item) => (
+        {playlist?.map((item) => (
           <Link
-            to={item.data.id ? `/search/${item.data.id}` : "/search"}
+            to={item?.data?.id ? `/search/${item?.data?.id}` : "/search"}
             state={item.data}
-            key={item.data.id}
+            key={item?.data?.id}
           >
-            <div className={styles.gridRow} key={item.id}>
+            <div className={styles.gridRow} key={item?.data?.id}>
               <div className={`${styles.gridItem}`}>
                 <img
                   className={styles.imgItem}
@@ -98,7 +62,12 @@ const Library = ({ userIdStorage }) => {
               </div>
 
               <div>{formatDate(item.createddate)}</div>
-              <button onClick={() => deletePlaylist(item.id)}><FontAwesomeIcon style={{fontSize: '0.8rem'}} icon={faTrash} /></button>
+              <button onClick={() => deletePlaylist(item?.id)}>
+                <FontAwesomeIcon
+                  style={{ fontSize: "0.8rem" }}
+                  icon={faTrash}
+                />
+              </button>
             </div>
           </Link>
         ))}

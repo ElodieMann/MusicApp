@@ -19,7 +19,6 @@ const Login = ({ setIsLog, setUserIdStorage }) => {
         password,
       });
 
-      console.log(response);
       setUserIdStorage(response.data.id);
 
       setIsLog(true);

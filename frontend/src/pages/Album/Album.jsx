@@ -12,11 +12,16 @@ import {
   faRepeat,
   faHeartCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { addPlaylist } from "../../redux/playlist";
+import { useDispatch } from "react-redux";
 import styles from "./Album.module.scss";
 import axios from "axios";
 
 const Album = ({ token, userIdStorage }) => {
+  const dispatch = useDispatch();
   const param = useLocation().state;
+  const audioRef = useRef();
+
   const [dataInfo, setDataInfo] = useState([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -24,17 +29,14 @@ const Album = ({ token, userIdStorage }) => {
   const [duration, setDuration] = useState(0);
   const [loop, setLoop] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
-  const audioRef = useRef();
   const [hovered, setHovered] = useState(false);
+  
   const data = dataInfo || param;
 
   useEffect(() => {
-    fetchDataType();
-    console.log(userIdStorage);
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
-  }, []);
+    if (!param?.tracks) fetchDataType();
+    else setDataInfo(param)
+  }, [param]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -59,9 +61,6 @@ const Album = ({ token, userIdStorage }) => {
         }
       );
 
-      console.log("====================================");
-      console.log(response.data);
-      console.log("====================================");
       setDataInfo(response.data);
     } catch (e) {
       console.log(e);
@@ -165,8 +164,9 @@ const Album = ({ token, userIdStorage }) => {
         data: data,
         userId: userIdStorage,
       });
-      console.log(response.data);
-      window.location.reload();
+      if (response.data) {
+        dispatch(addPlaylist(...response.data));
+      }
     } catch (e) {
       console.error(e);
     }
