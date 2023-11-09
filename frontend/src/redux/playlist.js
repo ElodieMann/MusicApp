@@ -17,10 +17,10 @@ export const playlistSlice = createSlice({
     getPlaylist: (state, action) => {
       state.playlist = action.payload;
     },
+    
   },
 });
 
-export const { addPlaylist, removePlaylist, getPlaylist } =
-  playlistSlice.actions;
+export const { addPlaylist, removePlaylist, getPlaylist } = playlistSlice.actions;
 
 export default playlistSlice.reducer;

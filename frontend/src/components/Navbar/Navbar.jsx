@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import styles from "./Navbar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import styles from "./Navbar.module.scss";
 
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState(null);

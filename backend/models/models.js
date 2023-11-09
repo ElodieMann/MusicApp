@@ -68,9 +68,10 @@ const getAllPlaylistsByUserId = async (userId) => {
 
 
 
-const addToLibrary = async (userId, data) => {
+const addToLibrary = async (id, userId, data) => {
   try {
     const newPlaylist = await db("playlists").insert({
+      id: id,
       userid: userId,
       data: JSON.stringify(data),
     }).returning('*');

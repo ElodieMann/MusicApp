@@ -15,3 +15,18 @@ export const formatDate = (dateString) => {
     const formattedDate = `${year}-${month}-${day}`;
     return formattedDate;
   }
+
+  export const formatClock = (totalMilliseconds) => {
+    const totalSeconds = Math.floor(totalMilliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  }
+
+  export const randomColor = () => {
+    const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);
+    const alpha = 0.1;
+    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+  };

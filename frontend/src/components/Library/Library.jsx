@@ -9,7 +9,7 @@ import styles from "./Library.module.scss";
 
 import axios from "axios";
 
-const Library = ({ userIdStorage }) => {
+const Library = () => {
   const dispatch = useDispatch();
 
   const playlist = useSelector((state) => state.playlist.playlist);
@@ -46,9 +46,9 @@ const Library = ({ userIdStorage }) => {
         </div>
         {playlist?.map((item) => (
           <Link
-            to={item?.data?.id ? `/search/${item?.data?.id}` : "/search"}
+            to={item?.id ? `/search/${item?.id}` : "/search"}
             state={item.data}
-            key={item?.data?.id}
+            key={item?.id}
           >
             <div className={styles.gridRow} key={item?.data?.id}>
               <div className={`${styles.gridItem}`}>

@@ -1,8 +1,8 @@
+import ListCard from "../../components/ListCard/ListCard";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import ListCard from "../../components/ListCard/ListCard";
 import styles from "./Search.module.scss";
 
 const Search = ({ token }) => {
@@ -10,6 +10,11 @@ const Search = ({ token }) => {
   const [dataAlbum, setDataAlbum] = useState([]);
   const [dataPlaylist, setDataPlaylist] = useState([]);
 
+  const categoryData = [
+    { name: "Album", playlists: dataAlbum },
+    { name: "Playlist", playlists: dataPlaylist },
+  ];
+  
   useEffect(() => {
     if (token && searchUser) {
       fetchSearchData();
@@ -35,10 +40,6 @@ const Search = ({ token }) => {
     }
   };
 
-  const categoryData = [
-    { name: "Album", playlists: dataAlbum },
-    { name: "Playlist", playlists: dataPlaylist },
-  ];
 
 
   return (

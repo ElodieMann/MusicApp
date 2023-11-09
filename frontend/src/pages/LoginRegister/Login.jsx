@@ -1,14 +1,20 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+//Login.jsx
 import axios from "axios";
-
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUserId, isLog } from "../../redux/userId";
 import styles from "./Login.module.scss";
 
-const Login = ({ setIsLog, setUserIdStorage }) => {
+const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errData, setErrData] = useState(false);
-  const [err, setErr] = useState('');
+  const [err, setErr] = useState("");
 
   const log = async (e) => {
     e.preventDefault();
@@ -19,18 +25,23 @@ const Login = ({ setIsLog, setUserIdStorage }) => {
         password,
       });
 
-      setUserIdStorage(response.data.id);
+      console.log('====================================');
+      console.log(response);
+      console.log('====================================');
 
-      setIsLog(true);
+      dispatch(getUserId(response.data.id));
 
-     
+      dispatch(isLog(true));
+      navigate("/");
+      
     } catch (e) {
       console.log(e);
       setErrData(true);
       setErr(e.response.data.error);
       setEmail("");
       setPassword("");
-      setUserIdStorage(null);
+      dispatch(getUserId(""));
+      dispatch(isLog(false));
     }
   };
 

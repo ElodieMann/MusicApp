@@ -1,29 +1,33 @@
 //App.js
+import axios from "axios";
 import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Library from "./components/Library/Library";
 import Home from "./pages/Home/Home";
+import Library from "./components/Library/Library";
 import Search from "./pages/Search/Search";
 import Album from "./pages/Album/Album";
-import "./App.css";
-import axios from "axios";
-import React, { useState, useEffect } from "react";
 import Login from "./pages/LoginRegister/Login";
 import Register from "./pages/LoginRegister/Register";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { getPlaylist } from "./redux/playlist";
+import { getUserId, isLog } from "./redux/userId";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRightFromBracket,
+  faArrowRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
+
+import "./App.css";
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.userId.userId);
+  const log = useSelector((state) => state.userId.isLog);
+
+
   const [token, setToken] = useState("");
-  const [userIdStorage, setUserIdStorage] = useState(localStorage.getItem("userIdStorage") || null);
-  const [isLog, setIsLog] = useState(localStorage.getItem("isLog") === "true" || false);
-  
-  useEffect(() => {
-    localStorage.setItem("isLog", isLog);
-    localStorage.setItem("userIdStorage", userIdStorage);
-  }, [isLog, userIdStorage]);
 
   useEffect(() => {
     fetchData();
@@ -32,7 +36,6 @@ function App() {
 
   const getData = async () => {
     try {
-      const userId = userIdStorage;
       const response = await axios.get(
         `http://localhost:3300/playlists/${userId}`
       );
@@ -63,45 +66,36 @@ function App() {
     }
   };
 
+  const logOut = () => {
+    dispatch(getUserId(""));
+    dispatch(isLog(false));
+  };
+
   return (
     <Router>
-      {isLog ? (
-        <div className="musicapp">
-          <div>
-            <Navbar />
-            <Library userIdStorage={userIdStorage} />
-          </div>
-          <Routes>
-            <Route path="/" element={<Home token={token} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/search" element={<Search token={token} />} />
-            <Route
-              path="/search/:id"
-              element={<Album token={token} userIdStorage={userIdStorage} />}
-            />
-          </Routes>
+      <div className="musicapp">
+        {log ? (
+          <Link className="btnLog" onClick={logOut} to="/login">
+            <FontAwesomeIcon icon={faArrowRightFromBracket} /> Log Out
+          </Link>
+        ) : (
+          <Link className="btnLog" to="/login">
+         <FontAwesomeIcon icon={faArrowRightToBracket} /> Log In
+          </Link>
+  
+        )}
+        <div>
+          <Navbar />
+          <Library />
         </div>
-      ) : (
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Login setIsLog={setIsLog} setUserIdStorage={setUserIdStorage} />
-            }
-          />
-
-          <Route
-            path="/register"
-            element={
-              <Register
-                setIsLog={setIsLog}
-                setUserIdStorage={setUserIdStorage}
-              />
-            }
-          />
+          <Route path="/" element={<Home token={token} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/search" element={<Search token={token} />} />
+          <Route path="/search/:id" element={<Album token={token} />} />
         </Routes>
-      )}
+      </div>
     </Router>
   );
 }

@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Login.module.scss";
 import axios from "axios";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUserId,  isLog} from "../../redux/userId"
+import styles from "./Login.module.scss";
  
-const Register = ({ setIsLog, setUserIdStorage }) => {
+const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
  
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -22,9 +27,13 @@ const Register = ({ setIsLog, setUserIdStorage }) => {
         email,
         password,
       });
-      setUserIdStorage(response.data[0].id)
-      setIsLog(true);
-      window.location.href = "/"; 
+      console.log('====================================');
+      console.log(response.data);
+      console.log('====================================');
+      dispatch(getUserId(response.data.id));
+
+      dispatch(isLog(true));
+      navigate("/");
     } catch (e) {
       console.log(e);
     }
@@ -74,7 +83,7 @@ const Register = ({ setIsLog, setUserIdStorage }) => {
 
       <p className={styles.redirect}>
         Already have an account{" "}
-        <Link className={styles.redirectRegister} to="/">
+        <Link className={styles.redirectRegister} to="/login">
           Log In
         </Link>
       </p>

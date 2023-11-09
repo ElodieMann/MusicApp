@@ -1,5 +1,6 @@
+import axios from "axios";
 import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMusic,
@@ -12,13 +13,22 @@ import {
   faRepeat,
   faHeartCirclePlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { addPlaylist } from "../../redux/playlist";
-import { useDispatch } from "react-redux";
+import { addPlaylist, getPlaylist } from "../../redux/playlist";
+import { useDispatch, useSelector } from "react-redux";
+import { formatClock, randomColor } from "../../services/helpers";
 import styles from "./Album.module.scss";
-import axios from "axios";
 
-const Album = ({ token, userIdStorage }) => {
+
+const Album = ({ token }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const user = useSelector((state) => state.userId.userId)
+  const playlist = useSelector((state) => state.playlist.playlist)
+  const log = useSelector((state) => state.userId.isLog);
+
+
+
   const param = useLocation().state;
   const audioRef = useRef();
 
@@ -32,6 +42,7 @@ const Album = ({ token, userIdStorage }) => {
   const [hovered, setHovered] = useState(false);
   
   const data = dataInfo || param;
+
 
   useEffect(() => {
     if (!param?.tracks) fetchDataType();
@@ -143,28 +154,20 @@ const Album = ({ token, userIdStorage }) => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  function formatClock(totalMilliseconds) {
-    const totalSeconds = Math.floor(totalMilliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  }
-
-  const randomColor = () => {
-    const red = Math.floor(Math.random() * 256);
-    const green = Math.floor(Math.random() * 256);
-    const blue = Math.floor(Math.random() * 256);
-    const alpha = 0.1;
-    return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
-  };
 
   const addToLibrary = async () => {
     try {
       const response = await axios.post("http://localhost:3300/playlists", {
         data: data,
-        userId: userIdStorage,
+        userId: user,
+        id: data.id
       });
-      if (response.data) {
+
+      const playlistExists = playlist.some(
+        (item) => item.userId === user && item.id === response.data.id
+      );
+  
+      if (!playlistExists) {
         dispatch(addPlaylist(...response.data));
       }
     } catch (e) {

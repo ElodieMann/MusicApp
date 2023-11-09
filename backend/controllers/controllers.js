@@ -48,7 +48,10 @@ const loginUser = async (req, res) => {
   };
 
   const getAllPlaylistsByUserId = async (req, res) => {
-    const userId = req.params.userId; // Assurez-vous que l'ID de l'utilisateur est correctement extrait de la requête
+    const userId = req.params; 
+    console.log('====================================');
+    console.log(userId);
+    console.log('====================================');
   
     try {
       const playlists = await models.getAllPlaylistsByUserId(userId);
@@ -61,10 +64,10 @@ const loginUser = async (req, res) => {
   
 
   const addToLibrary = async (req, res) => {
-    const { userId, data } = req.body;
+    const { id, userId, data } = req.body;
   
     try {
-      const newPlaylist = await models.addToLibrary(userId, data);
+      const newPlaylist = await models.addToLibrary(id, userId, data);
       res.status(201).json(newPlaylist);
     } catch (err) {
       console.error(err);
