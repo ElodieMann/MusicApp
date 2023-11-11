@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // par défaut, il utilise localStorage
-import thunk from 'redux-thunk'; // si vous utilisez le middleware thunk
+import storage from 'redux-persist/lib/storage';  
+import thunk from 'redux-thunk';  
 import { combineReducers } from '@reduxjs/toolkit';
 
 
