@@ -1,5 +1,4 @@
 // models.js
-
 const db = require("../config/knex");
 const bcrypt = require("bcrypt");
 
@@ -70,16 +69,33 @@ const getAllPlaylistsByUserId = async (userId) => {
 
 const addToLibrary = async (id, userId, data) => {
   try {
-    const newPlaylist = await db("playlists").insert({
-      id: id,
-      userid: userId,
-      data: JSON.stringify(data),
-    }).returning('*');
-    return newPlaylist;
+    const existingPlaylist = await db("playlists")
+      .where({ id, userid: userId })
+      .first();
+
+    if (!existingPlaylist) {
+      const newPlaylist = await db("playlists")
+        .insert({
+          id: id,
+          userid: userId,
+          data: JSON.stringify(data),
+        })
+        .returning("*");
+
+      return newPlaylist;
+    } else {
+
+      console.log("Playlist with the same ID already exists for this user.");
+      return existingPlaylist;
+    }
   } catch (error) {
+    console.error("Error adding playlist to library:", error);
     throw error;
   }
 };
+
+
+
 
 const deletePlaylist = async (playlistId) => {
   try {

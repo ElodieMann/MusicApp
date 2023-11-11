@@ -2,14 +2,13 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getUserId,  isLog} from "../../redux/userId"
+import { getUserId, isLog } from "../../redux/userId";
 import styles from "./Login.module.scss";
- 
+
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
- 
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
@@ -28,7 +27,7 @@ const Register = () => {
         password,
       });
 
-      dispatch(getUserId(response.data.id));
+      dispatch(getUserId(response.data?.[0].id));
 
       dispatch(isLog(true));
       navigate("/");

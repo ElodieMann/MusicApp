@@ -72,7 +72,7 @@ const Home = ({ token }) => {
   ];
 
 
-  return <ListCard categoryData={categoryData} />;
+  return <ListCard categoryData={categoryData}/>;
 };
 
 export default Home;

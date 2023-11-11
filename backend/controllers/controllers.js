@@ -62,10 +62,14 @@ const loginUser = async (req, res) => {
 
   const addToLibrary = async (req, res) => {
     const { id, userId, data } = req.body;
-  
+
     try {
-      const newPlaylist = await models.addToLibrary(id, userId, data);
-      res.status(201).json(newPlaylist);
+      const result = await models.addToLibrary(id, userId, data);
+  
+      if (result.error) {
+        return res.status(400).json({ error: result.error });
+      }
+        res.status(201).json(result);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Internal server error" });

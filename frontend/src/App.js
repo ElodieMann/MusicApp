@@ -19,6 +19,7 @@ import {
   faArrowRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 import "./App.css";
 
 function App() {
@@ -26,7 +27,6 @@ function App() {
   const userId = useSelector((state) => state.userId.userId);
   const log = useSelector((state) => state.userId.isLog);
 
-  console.log(userId, typeof userId);
 
   const [token, setToken] = useState("");
 

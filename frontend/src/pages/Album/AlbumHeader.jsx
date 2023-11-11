@@ -31,10 +31,12 @@ const AlbumHeader = ({data}) => {
             userId: user,
             id: data.id,
           });
+
+
     
-          const playlistExists = playlist.some(
-            (item) => item.userId === user && item.id === response.data.id
-          );
+           const playlistExists = playlist.some(
+                (item) => item.userId === user && item.id === response.data.id
+            );
     
           if (!playlistExists) {
             dispatch(addPlaylist(...response.data));

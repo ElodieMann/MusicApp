@@ -11,6 +11,8 @@ import axios from "axios";
 
 const Library = () => {
   const dispatch = useDispatch();
+  const log = useSelector((state) => state.userId.isLog);
+
 
   const playlist = useSelector((state) => state.playlist.playlist);
 
@@ -44,7 +46,7 @@ const Library = () => {
           <div>Date Added</div>
           <div>Remove</div>
         </div>
-        {playlist?.map((item) => (
+        {log && playlist?.map((item) => (
           <Link
             to={item?.id ? `/search/${item?.id}` : "/search"}
             state={item.data}
