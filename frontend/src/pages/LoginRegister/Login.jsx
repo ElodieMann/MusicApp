@@ -25,10 +25,6 @@ const Login = () => {
         password,
       });
 
-      console.log('====================================');
-      console.log(response);
-      console.log('====================================');
-
       dispatch(getUserId(response.data.id));
 
       dispatch(isLog(true));

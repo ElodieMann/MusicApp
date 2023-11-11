@@ -26,6 +26,7 @@ function App() {
   const userId = useSelector((state) => state.userId.userId);
   const log = useSelector((state) => state.userId.isLog);
 
+  console.log(userId, typeof userId);
 
   const [token, setToken] = useState("");
 
@@ -34,7 +35,12 @@ function App() {
     getData();
   }, []);
 
+  useEffect(() => {
+    getData();
+  }, [userId]);
+
   const getData = async () => {
+    if (!userId) return
     try {
       const response = await axios.get(
         `http://localhost:3300/playlists/${userId}`
@@ -51,8 +57,8 @@ function App() {
         "https://accounts.spotify.com/api/token",
         new URLSearchParams({
           grant_type: "client_credentials",
-          client_id: "a0daa57c8ea4404caae7e7a8a42df5e1",
-          client_secret: "ba77fd9929924e868318091cf91f53d9",
+          client_id: "de5f0165882c43e8979310a70debebd3",
+          client_secret: "003d3b9e0ff045299c03523b28598270",
         }).toString(),
         {
           headers: {
@@ -80,9 +86,8 @@ function App() {
           </Link>
         ) : (
           <Link className="btnLog" to="/login">
-         <FontAwesomeIcon icon={faArrowRightToBracket} /> Log In
+            <FontAwesomeIcon icon={faArrowRightToBracket} /> Log In
           </Link>
-  
         )}
         <div>
           <Navbar />

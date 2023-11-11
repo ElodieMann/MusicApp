@@ -48,10 +48,7 @@ const loginUser = async (req, res) => {
   };
 
   const getAllPlaylistsByUserId = async (req, res) => {
-    const userId = req.params; 
-    console.log('====================================');
-    console.log(userId);
-    console.log('====================================');
+    const userId = req.params.userId; 
   
     try {
       const playlists = await models.getAllPlaylistsByUserId(userId);

@@ -57,7 +57,7 @@ const findUser = async (email) => {
 
 const getAllPlaylistsByUserId = async (userId) => {
   try {
-    const playlists = await db.select("id", "data", "createddate")
+    const playlists = await db.select("id", 'userid', "data", "createddate")
       .from("playlists")
       .where("userid", userId);
     return playlists;

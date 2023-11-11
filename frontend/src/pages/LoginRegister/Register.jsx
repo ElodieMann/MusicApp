@@ -27,9 +27,7 @@ const Register = () => {
         email,
         password,
       });
-      console.log('====================================');
-      console.log(response.data);
-      console.log('====================================');
+
       dispatch(getUserId(response.data.id));
 
       dispatch(isLog(true));
