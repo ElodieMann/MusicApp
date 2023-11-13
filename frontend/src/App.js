@@ -12,7 +12,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPlaylist } from "./redux/playlist";
 import { getUserId, isLog } from "./redux/userId";
-
+// les imports commencent par {} apres par * apres les defauts et a la fin le style, verifie dans chaque fichier stp
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
@@ -26,7 +26,6 @@ function App() {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.userId.userId);
   const log = useSelector((state) => state.userId.isLog);
-
 
   const [token, setToken] = useState("");
 

@@ -20,6 +20,7 @@ const Card = ({ data }) => {
               <img
                 className={styles.imgHome}
                 src={data?.images?.[0]?.url || data?.album?.images?.[0]?.url}
+                // constante
                 alt={data.name}
               />
               <p>{data.name}</p>

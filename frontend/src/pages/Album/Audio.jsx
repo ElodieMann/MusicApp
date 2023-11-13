@@ -67,10 +67,10 @@ const Audio = ({
   const toggleLoop = (e) => {
     if (!loop) {
       setLoop(true);
-      e.target.style.color = "rgb(24, 129, 58)";
+      e.target.style.color = "rgb(24, 129, 58)"; // plus propre en Hexadecimal #.....
     } else {
       setLoop(false);
-      e.target.style.color = "white";
+      e.target.style.color = "white"; // plus propre en Hexadecimal #.....
     }
   };
 
@@ -89,6 +89,8 @@ const Audio = ({
       e.target.style.color = "white";
     }
   };
+
+  // je pense que tu peux faire une seule fonction avec loop et random et mettre les conditions en fonction de leur params que tu envois
 
   formatTime()
 
@@ -116,10 +118,13 @@ const Audio = ({
           src={
             data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]
               ?.url || data?.images?.[0]?.url
+              // doit etre dans une const par exemple = source = ata?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]
+              // ?.url || data?.images?.[0]?.url
           }
           alt={
             data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name ||
             data?.name
+            // dans une constante
           }
           className={styles["audio-album-image"]}
         />
@@ -133,6 +138,7 @@ const Audio = ({
           src={
             data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url ||
             data?.tracks?.items?.[currentTrackIndex]?.preview_url
+            // dans une constante
           }
           preload="metadata"
         ></audio>

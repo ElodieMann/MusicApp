@@ -24,6 +24,8 @@ const Album = ({ token }) => {
 
   const fetchDataType = async () => {
     try {
+      // fichier APIIIII 
+      // const reponse = await getType(param, token)
       const response = await axios.get(
         `https://api.spotify.com/v1/${param.type}s/${param.id}`,
         {
@@ -33,6 +35,7 @@ const Album = ({ token }) => {
         }
       );
 
+      // if reponse
       setDataInfo(response.data);
     } catch (e) {
       console.log(e);

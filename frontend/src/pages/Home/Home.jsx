@@ -18,7 +18,7 @@ const Home = ({ token }) => {
     "37i9dQZF1E4rm3VpkGRopl",
     "37i9dQZF1E4CuBuNYA6Ztj",
   ];
-
+// doit etre dans un fichier helpers et tu les export et import ici
   const recommendedRadio = [
     "37i9dQZF1E4DA4NMMNMQ1j",
     "37i9dQZF1E4AJ7APsyMVAt",
@@ -26,7 +26,7 @@ const Home = ({ token }) => {
     "37i9dQZF1E4BbZOu2w1hAZ",
     "37i9dQZF1E4pXRMmtPF6Pg",
   ];
-
+// doit etre dans un fichier helpers et tu les export et import ici
   const latinFavorite = [
     "37i9dQZF1DX8sljIJzI0oo",
     "37i9dQZF1DWVxf0LotrLLG",
@@ -38,18 +38,41 @@ const Home = ({ token }) => {
     "37i9dQZF1DWWWpEY2WZLnS",
     "37i9dQZF1DWY7IeIP1cdjF",
   ];
+  // doit etre dans un fichier helpers et tu les export et import ici
+
+  const categoryData = [ // les constantes sont avant les fonctions
+    { name: "Popular radio", playlists: dataPopular },
+    { name: "Recommended radio", playlists: dataRecommended },
+    { name: "Latin favorite", playlists: dataLatin },
+  ];
 
   useEffect(() => {
     if (token) {
       fetchDataForCategory(popularRadio, setDataPopular, token);
       fetchDataForCategory(recommendedRadio, setDataRecommended, token);
       fetchDataForCategory(latinFavorite, setDataLatin, token);
+      // repetitif essaye avec une iste d object tel que 
+      // const categoryData = [
+      // {
+      //   playlist: popularRadio,
+      //   setData : setDataPopular,
+      // }
+      // {
+      //   playlist: recommendedRadio,
+      //   setData : setDataRecommended,
+      // } etc.... 
+      // PAS BESOIN DU TOKEN EN PARAMS TU LE RECOIS EN PROPS DONC ACCES DANS TOUS LE FICHIER
+      // ]
+           
     }
   }, [token]);
 
   const fetchDataForCategory = async (categories, setData, token) => {
+    // PAS BESOIN DU TOKEN EN PARAMS TU LE RECOIS EN PROPS DONC ACCES DANS TOUS LE FICHIER
     for (const id of categories) {
       try {
+        // fichier api 
+        // const reponse = await getPlayLists(id, token)
         const response = await axios.get(
           `https://api.spotify.com/v1/playlists/${id}`,
           {
@@ -58,19 +81,13 @@ const Home = ({ token }) => {
             },
           }
         );
+        // if reponse ...
         setData((prevData) => [...prevData, response.data]);
       } catch (e) {
         console.log(e);
       }
     }
   };
-
-  const categoryData = [
-    { name: "Popular radio", playlists: dataPopular },
-    { name: "Recommended radio", playlists: dataRecommended },
-    { name: "Latin favorite", playlists: dataLatin },
-  ];
-
 
   return <ListCard categoryData={categoryData}/>;
 };

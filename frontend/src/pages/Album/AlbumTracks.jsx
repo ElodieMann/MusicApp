@@ -40,6 +40,7 @@ const AlbumTracks = ({data, setCurrentTrackIndex, togglePlay}) => {
                 className={styles.imgItem}
                 src={
                   item?.track?.album?.images?.[0]?.url || data?.images?.[0]?.url
+                  // dans une constante
                 }
                 alt=""
               />
@@ -47,6 +48,7 @@ const AlbumTracks = ({data, setCurrentTrackIndex, togglePlay}) => {
             </div>
             <div className={`${styles.gridItem}`}>
               {item?.track?.album?.name || data?.name}
+              {/* // dans une constante */}
             </div>
 
             <div className={`${styles.gridItem}`}>

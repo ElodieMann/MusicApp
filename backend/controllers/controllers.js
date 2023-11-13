@@ -1,4 +1,5 @@
 // controllers.js
+// nomme le controller userController, dans d autres appli tu pourras avoir 10 controlleurs
 const models = require("../models/models");
 const bcrypt = require("bcrypt");
 

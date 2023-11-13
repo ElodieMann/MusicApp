@@ -14,11 +14,36 @@ const Register = () => {
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // tu peux creer un seul state object tel que [user, setUser] = useState({
+    // username : ""
+    // firstname : ""
+    // lastname : ""
+    // email : ""
+    // password : ""
+  // })
+  // puis tu cree une fonction global qui ajoute l objet enfonction du name tel que 
+ 
+  // const onChange = (e, name) => {
+  //   const value = e.target.value;
+  //   setUser({
+  //     ...username,
+  //     [name]: value,
+  //   });
+  // }; noublie pas de remplacer dans toutes les foncitons input ou tu as setUsername setFirstName....
 
   const regist = async (e) => {
     e.preventDefault();
 
     try {
+      // fonction dans le ficher api "signUp" et return la response
+      // const user = {
+      //   username,
+      //   firstname,
+      //   lastname,
+      //   email,
+      //   password,
+      // } cree un objet pour que ca soit plus propre
+      // const response = await signUp(user)
       const response = await axios.post("http://localhost:3300/register", {
         username,
         firstname,
@@ -26,11 +51,12 @@ const Register = () => {
         email,
         password,
       });
-
+      // if res .... {
       dispatch(getUserId(response.data?.[0].id));
-
       dispatch(isLog(true));
       navigate("/");
+    // }
+
     } catch (e) {
       console.log(e);
     }
@@ -79,7 +105,7 @@ const Register = () => {
       </form>
 
       <p className={styles.redirect}>
-        Already have an account{" "}
+        Already have an account
         <Link className={styles.redirectRegister} to="/login">
           Log In
         </Link>
