@@ -1,8 +1,9 @@
 import ListCard from "../../components/ListCard/ListCard";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { ALBUMS, PLAYLISTS } from "../../config/keys";
+import { getSearch } from "../../services/api";
 import styles from "./Search.module.scss";
 
 const Search = ({ token }) => {
@@ -14,7 +15,7 @@ const Search = ({ token }) => {
     { name: "Album", playlists: dataAlbum },
     { name: "Playlist", playlists: dataPlaylist },
   ];
-  
+
   useEffect(() => {
     if (token && searchUser) {
       fetchSearchData();
@@ -23,43 +24,23 @@ const Search = ({ token }) => {
 
   const fetchSearchData = async () => {
     try {
-      // creer un fichier api qui sappel getSearch met la ligne 24 a 34 sans oublier de return la res
-      // tu auras donc const response = await getSearch(searchUser, token)
-      // setDataAlbum(response.data["albums"]);
-      //  setDataPlaylist(response.data["playlists"]);
-      // ca sera plus concis et plus comprehensible
-      const response = await axios.get(
-        `https://api.spotify.com/v1/search?q=${searchUser}&type=album,playlist`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      // creer un fichier key.js ou tu vas mettre tous les string tu auras apres response.data[ALBUMS] par exemple
-      setDataAlbum(response.data["albums"]);
-      setDataPlaylist(response.data["playlists"]);
-    
-
+       const response = await getSearch(searchUser, token)
+     
+      setDataAlbum(response.data[ALBUMS]);
+      setDataPlaylist(response.data[PLAYLISTS]);
     } catch (e) {
       console.log(e);
     }
   };
 
-  // const onSubmit = (e) =>{
-  //   e.preventDefault();
-  //   fetchSearchData();
-  // }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    fetchSearchData();
+  };
 
   return (
     <div className={styles.search}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          fetchSearchData();
-          // quand tu as +1 ligne tu dois creer une fonction tel que onSubmit={onSubmit}
-        }}
-      >
+      <form onSubmit={onSubmit}>
         <p>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </p>

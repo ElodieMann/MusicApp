@@ -5,6 +5,7 @@ import AlbumTracks from "./AlbumTracks";
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Album.module.scss";
+import { getType } from "../../services/api";
 
 
 const Album = ({ token }) => {
@@ -24,18 +25,10 @@ const Album = ({ token }) => {
 
   const fetchDataType = async () => {
     try {
-      // fichier APIIIII 
-      // const reponse = await getType(param, token)
-      const response = await axios.get(
-        `https://api.spotify.com/v1/${param.type}s/${param.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
 
-      // if reponse
+      const response = await getType(param, token)
+
+   if (response) 
       setDataInfo(response.data);
     } catch (e) {
       console.log(e);

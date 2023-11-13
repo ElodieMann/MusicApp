@@ -25,6 +25,14 @@ const Audio = ({
   const [duration, setDuration] = useState(0);
   const [loop, setLoop] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
+  const url =
+    data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]?.url ||
+    data?.images?.[0]?.url;
+  const previewUrl =
+    data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url ||
+    data?.tracks?.items?.[currentTrackIndex]?.preview_url;
+  const name =
+    data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name || data?.name;
 
   useEffect(() => {
     setAudio();
@@ -67,10 +75,10 @@ const Audio = ({
   const toggleLoop = (e) => {
     if (!loop) {
       setLoop(true);
-      e.target.style.color = "rgb(24, 129, 58)"; // plus propre en Hexadecimal #.....
+      e.target.style.color = "#18813a00";
     } else {
       setLoop(false);
-      e.target.style.color = "white"; // plus propre en Hexadecimal #.....
+      e.target.style.color = "#FFFFFF";
     }
   };
 
@@ -83,16 +91,14 @@ const Audio = ({
   const toggleRandom = (e) => {
     if (!isRandom) {
       setIsRandom(true);
-      e.target.style.color = "rgb(24, 129, 58)";
+      e.target.style.color = "#18813a00";
     } else {
       setIsRandom(false);
-      e.target.style.color = "white";
+      e.target.style.color = "#FFFFFF";
     }
   };
 
-  // je pense que tu peux faire une seule fonction avec loop et random et mettre les conditions en fonction de leur params que tu envois
-
-  formatTime()
+  formatTime();
 
   const playNext = () => {
     if (isRandom) {
@@ -114,34 +120,13 @@ const Audio = ({
   return (
     <div className={styles["audio-player"]}>
       <div className={styles["info-player"]}>
-        <img
-          src={
-            data?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]
-              ?.url || data?.images?.[0]?.url
-              // doit etre dans une const par exemple = source = ata?.tracks?.items?.[currentTrackIndex]?.track?.album?.images?.[0]
-              // ?.url || data?.images?.[0]?.url
-          }
-          alt={
-            data?.tracks?.items?.[currentTrackIndex]?.track?.album?.name ||
-            data?.name
-            // dans une constante
-          }
-          className={styles["audio-album-image"]}
-        />
+        <img src={url} alt={name} className={styles["audio-album-image"]} />
         <p className={styles["audio-track-name"]}>
           {data?.tracks?.items?.[currentTrackIndex]?.track?.name || data?.name}
         </p>
       </div>
       <div className={styles["player"]}>
-        <audio
-          ref={audioRef}
-          src={
-            data?.tracks?.items?.[currentTrackIndex]?.track?.preview_url ||
-            data?.tracks?.items?.[currentTrackIndex]?.preview_url
-            // dans une constante
-          }
-          preload="metadata"
-        ></audio>
+        <audio ref={audioRef} src={previewUrl} preload="metadata"></audio>
 
         <div className={styles["audio-controls"]}>
           <button className={styles["control-button"]} onClick={toggleRandom}>

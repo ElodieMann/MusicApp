@@ -36,3 +36,36 @@ export const formatTime = (time) => {
   const seconds = Math.floor(time % 60);
   return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 };
+
+export const popularRadio = [
+  "37i9dQZF1E4qz5vS55UCfv",
+  "37i9dQZF1E4lpj4fb7A9Nr",
+  "37i9dQZF1E4FhRRLh0mmxG",
+  "37i9dQZF1E4qSGMS0LCDb5",
+  "37i9dQZF1E4wmWec21cCcJ",
+  "37i9dQZF1E4uKNAcTu4q5q",
+  "37i9dQZF1E4wMmDGhc9aS2",
+  "37i9dQZF1E4kpnm6PFddQq",
+  "37i9dQZF1E4rm3VpkGRopl",
+  "37i9dQZF1E4CuBuNYA6Ztj",
+];
+// doit etre dans un fichier helpers et tu les export et import ici
+export const recommendedRadio = [
+  "37i9dQZF1E4DA4NMMNMQ1j",
+  "37i9dQZF1E4AJ7APsyMVAt",
+  "37i9dQZF1E4nqrwpUzdAQS",
+  "37i9dQZF1E4BbZOu2w1hAZ",
+  "37i9dQZF1E4pXRMmtPF6Pg",
+];
+// doit etre dans un fichier helpers et tu les export et import ici
+export const latinFavorite = [
+  "37i9dQZF1DX8sljIJzI0oo",
+  "37i9dQZF1DWVxf0LotrLLG",
+  "37i9dQZF1DX1hVRardJ30X",
+  "37i9dQZF1DX7qRKBHjmYIE",
+  "37i9dQZF1DWZoF06RIo9el",
+  "37i9dQZF1DX1QnNyJOBQBv",
+  "37i9dQZF1DXdWmNjHAJIwP",
+  "37i9dQZF1DWWWpEY2WZLnS",
+  "37i9dQZF1DWY7IeIP1cdjF",
+];

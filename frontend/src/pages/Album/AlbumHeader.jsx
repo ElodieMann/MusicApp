@@ -1,12 +1,12 @@
-import axios from "axios";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic, faHeartCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Album.module.scss";
-import { addPlaylist, getPlaylist } from "../../redux/playlist";
-import { useLocation, useNavigate } from "react-router-dom";
+import { addPlaylist } from "../../redux/playlist";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { randomColor } from "../../services/helpers";
+import { addToLibrary } from "../../services/api";
 
 const AlbumHeader = ({ data }) => {
   const dispatch = useDispatch();
@@ -16,37 +16,33 @@ const AlbumHeader = ({ data }) => {
   const playlist = useSelector((state) => state.playlist.playlist);
   const log = useSelector((state) => state.userId.isLog);
 
-  const addToLibrary = async () => {
+  const onAddToLibrary = async () => {
     if (!log) {
       navigate("/login");
       return;
     }
     try {
-      // const playlistData = { data: data, userId: user, id: data.id };
-      // ficher api const response = await addPlayListToLibrary(playlist)
-      const response = await axios.post("http://localhost:3300/playlists", {
-        data: data,
-        userId: user,
-        id: data.id,
-      });
+      const playlistData = { data: data, userId: user, id: data.id };
+      const response = await addToLibrary(playlistData);
 
-      // if response....
-      const playlistExists = playlist.some(
-        (item) => item.userId === user && item.id === response.data.id
-      );
+      if (response) {
+        const playlistExists = playlist.some(
+          (item) => item.userId === user && item.id === response.data.id
+        );
 
-      if (!playlistExists) {
-        dispatch(addPlaylist(...response.data));
+        if (!playlistExists) {
+          dispatch(addPlaylist(...response.data));
+        }
       }
     } catch (e) {
       console.error(e);
     }
   };
 
-  // const backgroundColor = randomColor() ligne 49
+  const backgroundColor = randomColor();
 
   return (
-    <div style={{ backgroundColor: randomColor() }} className={styles.header}>
+    <div style={{ backgroundColor: backgroundColor }} className={styles.header}>
       <img
         className={styles.imgHeader}
         src={data?.images?.[0]?.url}
@@ -69,7 +65,7 @@ const AlbumHeader = ({ data }) => {
           <p>{data?.tracks?.items?.length} songs</p>
         </div>
         <div>
-          <button onClick={addToLibrary}>
+          <button onClick={onAddToLibrary}>
             <FontAwesomeIcon icon={faHeartCirclePlus} /> Save to Your Library
           </button>
         </div>
