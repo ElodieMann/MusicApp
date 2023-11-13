@@ -3,9 +3,9 @@ import Audio from "./Audio";
 import AlbumHeader from "./AlbumHeader";
 import AlbumTracks from "./AlbumTracks";
 import React, { useState, useRef, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import styles from "./Album.module.scss";
+import { useLocation } from "react-router-dom";
 import { getType } from "../../services/api";
+import styles from "./Album.module.scss";
 
 
 const Album = ({ token }) => {

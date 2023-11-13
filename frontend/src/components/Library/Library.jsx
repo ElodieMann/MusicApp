@@ -1,8 +1,8 @@
-import PlaylistLink from "./PlaylistLink";
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPodcast } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import PlaylistLink from "./PlaylistLink";
 
 import styles from "./Library.module.scss";
 

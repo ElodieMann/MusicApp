@@ -1,5 +1,28 @@
 import axios from "axios";
 
+export const getDataPlaylist = async (userId) => {
+  const response = await axios.get(
+    `http://localhost:3300/playlists/${userId}`
+  );
+  return response
+}
+export const getToken = async () => {
+  const response = await axios.post(
+    "https://accounts.spotify.com/api/token",
+    new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: "de5f0165882c43e8979310a70debebd3",
+      client_secret: "003d3b9e0ff045299c03523b28598270",
+    }).toString(),
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
+  return response
+}
+
 export const deletePlaylist = async (playlistId) => {
   const res = await axios.delete(
     `http://localhost:3300/playlists/${playlistId}`

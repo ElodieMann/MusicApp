@@ -1,9 +1,9 @@
-import ListCard from "../../components/ListCard/ListCard";
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { ALBUMS, PLAYLISTS } from "../../config/keys";
 import { getSearch } from "../../services/api";
+import ListCard from "../../components/ListCard/ListCard";
 import styles from "./Search.module.scss";
 
 const Search = ({ token }) => {

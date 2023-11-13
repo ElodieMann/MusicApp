@@ -1,5 +1,14 @@
-//App.js
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getPlaylist } from "./redux/playlist";
+import { getUserId, isLog } from "./redux/userId";
+import { getDataPlaylist, getToken } from "./services/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRightFromBracket,
+  faArrowRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Library from "./components/Library/Library";
@@ -7,19 +16,6 @@ import Search from "./pages/Search/Search";
 import Album from "./pages/Album/Album";
 import Login from "./pages/LoginRegister/Login";
 import Register from "./pages/LoginRegister/Register";
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getPlaylist } from "./redux/playlist";
-import { getUserId, isLog } from "./redux/userId";
-// les imports commencent par {} apres par * apres les defauts et a la fin le style, verifie dans chaque fichier stp
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowRightFromBracket,
-  faArrowRightToBracket,
-} from "@fortawesome/free-solid-svg-icons";
-
-
 import "./App.css";
 
 function App() {
@@ -41,9 +37,7 @@ function App() {
   const getData = async () => {
     if (!userId) return
     try {
-      const response = await axios.get(
-        `http://localhost:3300/playlists/${userId}`
-      );
+      const response = await getDataPlaylist(userId)
       dispatch(getPlaylist(response.data));
     } catch (e) {
       console.log(e);
@@ -52,19 +46,7 @@ function App() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post(
-        "https://accounts.spotify.com/api/token",
-        new URLSearchParams({
-          grant_type: "client_credentials",
-          client_id: "de5f0165882c43e8979310a70debebd3",
-          client_secret: "003d3b9e0ff045299c03523b28598270",
-        }).toString(),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
+      const response = await getToken()
       setToken(response.data.access_token);
     } catch (error) {
       console.error("Error:", error);

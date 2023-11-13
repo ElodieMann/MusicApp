@@ -9,7 +9,6 @@ import {
   faRepeat,
 } from "@fortawesome/free-solid-svg-icons";
 import { formatTime } from "../../services/helpers";
-
 import styles from "./Album.module.scss";
 
 const Audio = ({

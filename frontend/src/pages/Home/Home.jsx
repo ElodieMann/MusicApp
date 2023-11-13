@@ -1,4 +1,3 @@
-import ListCard from "../../components/ListCard/ListCard";
 import React, { useState, useEffect } from "react";
 import {
   popularRadio,
@@ -6,6 +5,7 @@ import {
   latinFavorite,
 } from "../../services/helpers";
 import { getPlayLists } from "../../services/api";
+import ListCard from "../../components/ListCard/ListCard";
 
 const Home = ({ token }) => {
   const [dataPopular, setDataPopular] = useState([]);

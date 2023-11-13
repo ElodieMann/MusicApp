@@ -1,12 +1,12 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic, faHeartCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import styles from "./Album.module.scss";
 import { addPlaylist } from "../../redux/playlist";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { randomColor } from "../../services/helpers";
 import { addToLibrary } from "../../services/api";
+import styles from "./Album.module.scss";
 
 const AlbumHeader = ({ data }) => {
   const dispatch = useDispatch();
